@@ -1,0 +1,39 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* height: 100%;
+    width: 100%;
+    position: absolute;
+    overflow: hidden; */
+}
+
+#sketch {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid;
+    background-color: white;
+    height: 500px;
+    width: 500px;
+    /* box-shadow: 5px 10px 18px #9d1818; */
+}
+
+.square {
+    justify-content: space-around;
+}
+
+#mainDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 25px;
+}
+
+#optionDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
