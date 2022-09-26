@@ -1,7 +1,5 @@
-const colorClickEvent = new Event("click");
-
 const heading = document.createElement("h1");
-heading.textContent = "Etch-a-sketch";
+heading.textContent = "etch-a-sketch";
 document.body.appendChild(heading);
 
 const mainDiv = document.createElement("div");
@@ -19,27 +17,37 @@ selectButton.id = "select";
 
 const colorButton = document.createElement("button");
 colorButton.id = "color";
-colorButton.textContent = "Color Mode";
+colorButton.textContent = "color mode";
 
 const rainbowButton = document.createElement("button");
 rainbowButton.id = "rainbow";
-rainbowButton.textContent = "Rainbow Mode";
+rainbowButton.textContent = "rainbow mode";
 
 const shadeButton = document.createElement("button");
 shadeButton.id = "shade";
-shadeButton.textContent = "Shade Mode";
+shadeButton.textContent = "shade mode";
 
 const resetButton = document.createElement("button");
 resetButton.id = "reset";
-resetButton.textContent = "Reset";
+resetButton.textContent = "reset";
 
 const colorPalette = document.createElement("input");
 colorPalette.id = "colorButton";
 colorPalette.setAttribute("type", "color");
 colorPalette.setAttribute("selected", "black");
 
-optionDiv.appendChild(selectButton);
-optionDiv.appendChild(colorPalette);
+const gridText = document.createElement("div");
+gridText.className = "inputStyles";
+gridText.textContent = `grid: `;
+gridText.appendChild(selectButton);
+
+const colorPaletteText = document.createElement("div");
+colorPaletteText.className = "inputStyles";
+colorPaletteText.textContent = `color: `;
+colorPaletteText.appendChild(colorPalette);
+
+optionDiv.appendChild(gridText);
+optionDiv.appendChild(colorPaletteText);
 optionDiv.appendChild(colorButton);
 optionDiv.appendChild(rainbowButton);
 optionDiv.appendChild(shadeButton);
@@ -49,7 +57,7 @@ mainDiv.appendChild(sketch);
 
 // select grid
 const select = document.getElementById("select");
-for (let i = 1; i <= 64; i++) {
+for (let i = 1; i <= 100; i++) {
   const option = document.createElement("option");
   option.textContent = `${i} x ${i}`;
   option.value = i;
@@ -60,7 +68,6 @@ for (let i = 1; i <= 64; i++) {
 select.addEventListener("change", (e) => {
   selectedNumber = e.target.value;
   sketch.textContent = "";
-
   for (let x = 0; x < selectedNumber * selectedNumber; x++) {
     const squares = document.createElement("div");
     squares.className = "square";
@@ -69,65 +76,78 @@ select.addEventListener("change", (e) => {
     squares.style.height = squares.style.width = squareHeight;
     sketch.appendChild(squares);
   }
-  document.getElementById("color").dispatchEvent(colorClickEvent);
 });
 
 // switch
-let toggle;
+let toggle = 'color';
 const buttons = document.querySelectorAll("button");
 for (const button of buttons) {
   button.addEventListener("click", (btnEvent) => {
-    if (btnEvent.target.id === "color") toggle = "color";
-    if (btnEvent.target.id === "rainbow") toggle = "rainbow";
-    if (btnEvent.target.id === "shade") toggle = "shade";
-
-    const getColor = document.getElementById("colorButton");
-
-    function mode(e) {
-      if (toggle === "color") {
-        e.target.style.background = getColor.value;
-      } else if (toggle === "rainbow") {
-        let randomColor =
-          "#" + Math.floor(Math.random() * 16777215).toString(16);
-        e.target.style.background = randomColor;
-      } else if (toggle === "shade") {
-        const rgbToArray = e.target.style.background
-          .replace(/^(rgb|rgba)\(/, "")
-          .replace(/\)$/, "")
-          .replace(/\s/g, "")
-          .split(",");
-
-        const hexToRgb = getColor.value
-          .replace(
-            /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
-            (m, r, g, b) => "#" + r + r + g + g + b + b
-          )
-          .substring(1)
-          .match(/.{2}/g)
-          .map((x) => parseInt(x, 16));
-
-        rgbToArray[3] = Number(rgbToArray[3]);
-        rgbToArray[3] += 0.05;
-        e.target.style.background = `rgba(${hexToRgb[0]}, ${hexToRgb[1]}, ${hexToRgb[2]}, ${rgbToArray[3]})`;
-      }
+    if (btnEvent.target.id === "color") {
+      toggle = "color";
+      buttons[0].classList.add('clickedButton');
+      buttons[1].classList.remove('clickedButton');
+      buttons[2].classList.remove('clickedButton');
     }
-
-    const allSquares = document.querySelectorAll(".square");
-
-    sketch.addEventListener("mousedown", (e) => {
-      mode(e);
-      [...allSquares].map((square) => {
-        square.addEventListener("mouseover", mode);
-      });
-    });
-
-    document.body.addEventListener("mouseup", () => {
-      [...allSquares].map((square) => {
-        square.removeEventListener("mouseover", mode);
-      });
-    });
+    if (btnEvent.target.id === "rainbow") {
+      toggle = "rainbow";
+      buttons[1].classList.add('clickedButton');
+      buttons[0].classList.remove('clickedButton');
+      buttons[2].classList.remove('clickedButton');
+    }
+    if (btnEvent.target.id === "shade") {
+      toggle = "shade";
+      buttons[2].classList.add('clickedButton');
+      buttons[0].classList.remove('clickedButton');
+      buttons[1].classList.remove('clickedButton');
+    }
   });
 }
+
+function mode(e) {
+  const getColor = document.getElementById("colorButton");
+
+  if (toggle === "color") {
+    e.target.style.background = getColor.value;
+  } else if (toggle === "rainbow") {
+    let randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    e.target.style.background = randomColor;
+  } else {
+    const rgbToArray = e.target.style.background
+      .replace(/^(rgb|rgba)\(/, "")
+      .replace(/\)$/, "")
+      .replace(/\s/g, "")
+      .split(",");
+
+    const hexToRgb = getColor.value
+      .replace(
+        /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
+        (m, r, g, b) => "#" + r + r + g + g + b + b
+      )
+      .substring(1)
+      .match(/.{2}/g)
+      .map((x) => parseInt(x, 16));
+
+    rgbToArray[3] = Number(rgbToArray[3]);
+    rgbToArray[3] += 0.1;
+    e.target.style.background = `rgba(${hexToRgb[0]}, ${hexToRgb[1]}, ${hexToRgb[2]}, ${rgbToArray[3]})`;
+  }
+}
+
+sketch.addEventListener("mousedown", () => {
+  const allSquares = document.querySelectorAll(".square");
+  for (const square of allSquares) {
+    square.addEventListener("mousedown", mode);
+    square.addEventListener("mouseover", mode);
+  }
+}, true);
+
+document.body.addEventListener("mouseup", () => {
+  const allSquares = document.querySelectorAll(".square");
+  for (const square of allSquares) {
+    square.removeEventListener("mouseover", mode);
+  }
+});
 
 // reset
 document.getElementById("reset").addEventListener("click", () => {
