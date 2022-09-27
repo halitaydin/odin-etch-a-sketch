@@ -9,8 +9,8 @@ mainDiv.id = "mainDiv";
 const optionDiv = document.createElement("div");
 optionDiv.id = "optionDiv";
 
-const sketch = document.createElement("div");
-sketch.id = "sketch";
+const sketchDiv = document.createElement("div");
+sketchDiv.id = "sketchDiv";
 
 const selectButton = document.createElement("select");
 selectButton.id = "select";
@@ -53,7 +53,7 @@ optionDiv.appendChild(rainbowButton);
 optionDiv.appendChild(shadeButton);
 optionDiv.appendChild(resetButton);
 mainDiv.appendChild(optionDiv);
-mainDiv.appendChild(sketch);
+mainDiv.appendChild(sketchDiv);
 
 // select grid
 const select = document.getElementById("select");
@@ -67,14 +67,14 @@ for (let i = 1; i <= 100; i++) {
 
 select.addEventListener("change", (e) => {
   selectedNumber = e.target.value;
-  sketch.textContent = "";
+  sketchDiv.textContent = "";
   for (let x = 0; x < selectedNumber * selectedNumber; x++) {
     const squares = document.createElement("div");
     squares.className = "square";
     squares.style.background = "rgba(255, 255, 255, 0)";
     const squareHeight = (squareWidth = `${500 / selectedNumber}px`);
     squares.style.height = squares.style.width = squareHeight;
-    sketch.appendChild(squares);
+    sketchDiv.appendChild(squares);
   }
 });
 
@@ -82,6 +82,8 @@ select.addEventListener("change", (e) => {
 let toggle = 'color';
 const buttons = document.querySelectorAll("button");
 for (const button of buttons) {
+  buttons[0].classList.add('clickedButton');
+  buttons[0].focus();
   button.addEventListener("click", (btnEvent) => {
     if (btnEvent.target.id === "color") {
       toggle = "color";
@@ -134,7 +136,7 @@ function mode(e) {
   }
 }
 
-sketch.addEventListener("mousedown", () => {
+sketchDiv.addEventListener("mousedown", () => {
   const allSquares = document.querySelectorAll(".square");
   for (const square of allSquares) {
     square.addEventListener("mousedown", mode);
