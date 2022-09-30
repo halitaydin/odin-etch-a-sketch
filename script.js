@@ -87,21 +87,27 @@ for (const button of buttons) {
   button.addEventListener("click", (btnEvent) => {
     if (btnEvent.target.id === "color") {
       toggle = "color";
+      buttons[0].focus();
       buttons[0].classList.add('clickedButton');
       buttons[1].classList.remove('clickedButton');
       buttons[2].classList.remove('clickedButton');
     }
     if (btnEvent.target.id === "rainbow") {
       toggle = "rainbow";
+      buttons[1].focus();
       buttons[1].classList.add('clickedButton');
       buttons[0].classList.remove('clickedButton');
       buttons[2].classList.remove('clickedButton');
     }
     if (btnEvent.target.id === "shade") {
       toggle = "shade";
+      buttons[2].focus();
       buttons[2].classList.add('clickedButton');
       buttons[0].classList.remove('clickedButton');
       buttons[1].classList.remove('clickedButton');
+    }
+    if (btnEvent.target.id === "reset") {
+      buttons[3].focus();
     }
   });
 }
