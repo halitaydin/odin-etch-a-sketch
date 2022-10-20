@@ -66,10 +66,6 @@ for (let i = 1; i <= 100; i++) {
 }
 
 let dimensions;
-window.addEventListener("resize", () => {
-  window.innerWidth <= 600 ? (dimensions = 300) : (dimensions = 500);
-  document.getElementById("select").dispatchEvent(defaultEvent);
-});
 
 select.addEventListener("change", (e) => {
   window.innerWidth <= 600 ? (dimensions = 300) : (dimensions = 500);
