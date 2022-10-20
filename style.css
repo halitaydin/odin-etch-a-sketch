@@ -110,4 +110,8 @@ button:focus {
     flex-direction: row;
     flex-wrap: wrap;
   }
+
+  button {
+    padding: 1em;
+  }
 }
