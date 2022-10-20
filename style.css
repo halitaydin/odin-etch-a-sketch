@@ -92,9 +92,7 @@ button:focus {
 
 @media screen and (max-width: 600px) {
   h1 {
-    justify-content: center;
-    margin: auto;
-    margin-bottom: 10px;
+    display: none;
   }
 
   #mainDiv {
